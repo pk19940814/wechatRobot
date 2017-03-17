@@ -1,5 +1,5 @@
 import itchat
-from itchat.content import TEXT
+from itchat.content import *
 from datetime import datetime
 import requests
 import json
@@ -7,7 +7,7 @@ import json
 OPENROBOT = False
 
 
-@itchat.msg_register(TEXT, isFriendChat=True)
+@itchat.msg_register(TEXT,  isFriendChat=True)
 def tuling(msg):
     global OPENROBOT
     info = itchat.search_friends(userName=msg.get('FromUserName'))
@@ -40,9 +40,18 @@ def tuling(msg):
             return '召唤成功！回复[滚蛋吧机器人]，唤醒人工服务'
         else:
             return reply
-    if hour >= 23 or hour <= 6:
+    if hour >= 23 or hour <= 5:
         return '半智能机器人：现在是%d点%d分，%s晚安，机器人也是要休息的' % (hour, minute, info['NickName'])
+
+
+@itchat.msg_register(PICTURE, isFriendChat=True)
+def relpy_pic(msg):
+    hour = datetime.now().hour
+    minute = datetime.now().minute
+    info = itchat.search_friends(userName=msg.get('FromUserName'))
+    if hour >= 23 or hour <= 5:
+        return '半智能机器人：现在是%d点%d分，%s晚安，机器人也是要休息的' % (hour, minute, info['NickName'])
+
 
 itchat.auto_login()
 itchat.run()
-
